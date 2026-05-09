@@ -6,10 +6,10 @@ namespace CCVerify.Tests;
 public class CardValidatorTests
 {
     [Theory]
-    [InlineData("4532015112830366", true, CardNetwork.Visa)]         // Valid Visa
-    [InlineData("5425233430109903", true, CardNetwork.MasterCard)]   // Valid MasterCard
-    [InlineData("374251018720955", true, CardNetwork.AmericanExpress)] // Valid Amex
-    [InlineData("6011111111111117", true, CardNetwork.Discover)]     // Valid Discover
+    [InlineData("4532015112830366", true,  CardNetwork.Visa)]           // Valid Visa
+    [InlineData("5425233430109903", true,  CardNetwork.MasterCard)]     // Valid MasterCard
+    [InlineData("378282246310005",  true,  CardNetwork.AmericanExpress)] // Valid Amex 37 (Stripe)
+    [InlineData("6011111111111117", true,  CardNetwork.Discover)]       // Valid Discover
     public void Validate_KnownGoodCards_ReturnsValidWithNetwork(
         string number, bool expectedValid, CardNetwork expectedNetwork)
     {
@@ -33,7 +33,6 @@ public class CardValidatorTests
     public void Validate_UnknownNetwork_IsNotValid()
     {
         // Luhn-valid but unknown network prefix
-        // Generate a Luhn-valid number starting with 9
         var result = CardValidator.Validate("9999999999999995");
         Assert.False(result.IsValid);
         Assert.Equal(CardNetwork.Unknown, result.Network);
